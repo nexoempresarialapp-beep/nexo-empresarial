@@ -1215,8 +1215,8 @@ function confDel(id,nome,tipo,extra){
 }
 async function delC(id){await sb.from('clientes').delete().eq('id',id);await carregarDash();ir('vw-dash');}
 var CK=[
-  {t:'1. Momento do negocio',its:['Empresa em operação','Faturamento recorrente','Clientes ativos','Alem da fase inicial'],min:3},
-  {t:'2. Intencao de crescimento',its:['Interesse em crescer','Verbaliza objetivos','Busca evolução','Ambição de melhorar'],min:3},
+  {t:'1. Momento do negocio',its:['Empresa já está em operação (não é ideia)','Possui faturamento recorrente','Já possui clientes ativos','Está além da fase inicial de validação'],min:3},
+  {t:'2. Intencao de crescimento',its:['Demonstra interesse claro em crescer (faturamento, mercado ou estrutura)','Consegue verbalizar objetivos (mesmo que não estruturados)','Busca evolução, não apenas solução pontual','Tem ambição de melhorar o negócio'],min:3},
   {t:'3. Postura',its:['Aberto a ouvir','Aceita cocriação','Comprometimento','Assume responsabilidade']},
   {t:'4. Disponibilidade',its:['Disponivel para encontros','Tempo para executar','Contato continuo'],min:2},
   {t:'5. Medicao',its:['Aceita dados','Medir indicadores','Entende a importância']},
