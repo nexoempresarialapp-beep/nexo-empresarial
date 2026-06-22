@@ -1277,7 +1277,7 @@ async function carregarHist(){
   data.forEach(function(d){
     var tipo=d.dados&&d.dados.tipo?d.dados.tipo:'ia';
     var label={radar:'Radar de Maturidade',mvv:'Missão, Visão e Valores + SWOT',avaliacao:'Avaliação de Resultados',nps:'NPS da Assessoria','okr-ia':'OKR + IA'}[tipo]||'Diagnóstico + IA';
-    var icone={radar:'📊',mvv:'🌟',avaliacao:'📈',nps:'⭐'}[tipo]||'🤖';
+    var icone={radar:'📝',mvv:'📝',avaliacao:'📈',nps:'⭐'}[tipo]||'📝';
     var porCli=d.dados&&d.dados.preenchido_por==='cliente';
     var dtP=d.dados&&d.dados.data_preenchimento?fmtD(d.dados.data_preenchimento):fmtD(d.created_at);
     html+='<div class="cc" onclick="verDiag(\''+d.id+'\')" style="cursor:pointer"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">'+icone+'</span><div><div style="font-weight:600;font-size:13px">'+label+'</div><div style="font-size:11px;color:var(--czt)">'+dtP+'</div></div></div>';
