@@ -1215,13 +1215,13 @@ function confDel(id,nome,tipo,extra){
 }
 async function delC(id){await sb.from('clientes').delete().eq('id',id);await carregarDash();ir('vw-dash');}
 var CK=[
-  {t:'1. Momento do negocio',its:['Empresa já está em operação (não é ideia)','Possui faturamento recorrente','Já possui clientes ativos','Está além da fase inicial de validação'],min:3},
-  {t:'2. Intencao de crescimento',its:['Demonstra interesse claro em crescer (faturamento, mercado ou estrutura)','Consegue verbalizar objetivos (mesmo que não estruturados)','Busca evolução, não apenas solução pontual','Tem ambição de melhorar o negócio'],min:3},
-  {t:'3. Postura',its:['Aberto a ouvir','Aceita cocriação','Comprometimento','Assume responsabilidade']},
-  {t:'4. Disponibilidade',its:['Disponivel para encontros','Tempo para executar','Contato continuo'],min:2},
-  {t:'5. Medicao',its:['Aceita dados','Medir indicadores','Entende a importância']},
-  {t:'6. Aderencia SBDC',its:['Jornada medio prazo','Aceita acompanhamento','Formalizar']},
-  {t:'7. Potencial',its:['Potencial crescimento','Oportunidade melhoria','Impacto economico']}
+  {t:'1. Momento do negócio',its:['Empresa já está em operação (não é ideia)','Possui faturamento recorrente','Já possui clientes ativos','Está além da fase inicial de validação'],min:3},
+  {t:'2. Intenção de crescimento',its:['Demonstra interesse claro em crescer (faturamento, mercado ou estrutura)','Consegue verbalizar objetivos (mesmo que não estruturados)','Busca evolução, não apenas solução pontual','Tem ambição de melhorar o negócio'],min:3},
+  {t:'3. Postura do empresário',its:['Está aberto a ouvir e refletir sobre a empresa','Aceita cocriação (não espera solução pronta)','Demonstra comprometimento com execução','Assume responsabilidade pelos resultados']},
+  {t:'4. Disponibilidade',its:['Disponibilidade para encontros periódicos (mínimo mensal)','Consegue dedicar tempo para executar o plano','Está disposto a manter contato contínuo'],min:2},
+  {t:'5. Abertura para medição',its:['Aceita compartilhar dados do negócio','Está disposto a medir indicadores (faturamento, emprego etc.)','Entende a importância da medição']},
+  {t:'6. Aderência ao modelo SBDC',its:['Entende que é uma jornada de médio/longo prazo','Concorda com acompanhamento contínuo','Aceita formalizar participação (termo de adesão)']},
+  {t:'7. Potencial de impacto',its:['Negócio tem potencial de crescimento','Existe oportunidade clara de melhoria','Possibilidade de gerar impacto econômico']}
 ];
 function irCK(){
   var html='<h3>Avaliação de elegibilidade</h3>';
