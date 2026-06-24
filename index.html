@@ -1756,7 +1756,7 @@ function gerarParecerOKRIA(idRes,idEmp,idDat,idAss){
   var _dat=dat?(dat.value||''):'';
   var _ass=ass?(ass.value||''):'';
   var html='<div style="font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:40px">';
-  html+=_pdfHdr('Parecer novo OKR',_emp,_dat,_ass);
+  html+=_pdfHdr('Parecer OKR',_emp,_dat,_ass);
   html+='<div style="font-size:13px;line-height:1.7;color:#333">'+_getIAContent(idRes)+'</div>';
   html+='</div>';
   var w=window.open('','_blank');
