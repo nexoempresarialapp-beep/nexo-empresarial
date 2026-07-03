@@ -2220,7 +2220,7 @@ function _atualizarPainelPendencias(clis,pendMap){
     var html='';
     pendClis.forEach(function(c){
       var n=pendMap[c.id].krVencidos;
-      html+='<div onclick="abrirC(\''+c.id+'\')" style="padding:10px 14px;border-bottom:1px solid var(--czb);cursor:pointer" onmouseover="this.style.background=\'#fffbeb\'" onmouseout="this.style.background=\'#fff\'">';
+      html+='<div onclick="abrirC(\''+c.id+'\',true)" style="padding:10px 14px;border-bottom:1px solid var(--czb);cursor:pointer" onmouseover="this.style.background=\'#fffbeb\'" onmouseout="this.style.background=\'#fff\'">';
       html+='<div style="font-size:13px;font-weight:600;color:#1351A3">'+c.nome_empresa+'</div>';
       html+='<div style="font-size:12px;color:#92400E;margin-top:2px">'+n+' KR'+(n>1?'s':'')+' vencido'+(n>1?'s':'')+'</div>';
       html+='</div>';
@@ -2236,7 +2236,7 @@ async function salvarCliente(){
   ['nc-e','nc-empr','nc-tel','nc-as','nc-foco'].forEach(function(id){var e=el(id);if(e)e.value='';});
   CLI=res.data;await carregarDash();abrirC(res.data.id);
 }
-async function abrirC(id){
+async function abrirC(id,irParaOKR){
   var r=await sb.from('clientes').select('*').eq('id',id).single();CLI=r.data;var d=CLI;
   el('c-titulo').textContent=d.nome_empresa;
   el('c-sub').textContent=d.nome_empresario+(d.tempo_mercado?' · '+d.tempo_mercado:'');
@@ -2273,7 +2273,7 @@ async function abrirC(id){
     if(d.termo_assinado===true){btnSim.style.background='#BFDBFE';btnSim.style.color='#1E40AF';btnSim.style.borderColor='#93C5FD';}
     else if(d.termo_assinado===false){btnNao.style.background='#BFDBFE';btnNao.style.color='#1E40AF';btnNao.style.borderColor='#93C5FD';}
   }
-  ir('vw-c');carregarHist();carregarCKSalvo();
+  if(irParaOKR){ir('vw-okr');carregarOKR();}else{ir('vw-c');carregarHist();carregarCKSalvo();}
 }
 function toggleDados(){var e=el('c-dados');e.style.display=e.style.display==='none'?'block':'none';}
 async function exportarDossie(){
@@ -3134,15 +3134,16 @@ async function carregarOKR(){
     var prazoFinal=prazos.length?prazos[prazos.length-1]:null;
     var stObj=prazoFinal&&obj.status!=='Concluído'?statusKR({prazo:prazoFinal,status:obj.status}):{cls:'',ind:'',ic:''};
     var isPrioObj=obj.status==='Em andamento'&&prazoFinal&&diasR(prazoFinal)<=7&&diasR(prazoFinal)>=0;
-    html+='<div class="ob"><div class="oh"><div class="ot">Obj '+(obj.numero||'')+': '+obj.titulo+'</div>';
-    html+='<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">';
-    html+='<div style="display:flex;gap:4px">';
+    var _badgesObj='';
+    if(stObj.ind)_badgesObj+=' <span class="kid '+stObj.ic+'" style="position:static;display:inline-block;vertical-align:middle">'+stObj.ind+'</span>';
+    if(isPrioObj)_badgesObj+=' <span class="kid az" style="position:static;display:inline-block;vertical-align:middle">\u26a1 Proximo</span>';
+    html+='<div class="ob"><div class="oh"><div class="ot">Obj '+(obj.numero||'')+': '+obj.titulo+_badgesObj+'</div>';
+    html+='<div style="display:flex;gap:4px;flex-shrink:0">';
     html+='<button class="ba" style="padding:4px 8px;font-size:11px" onclick="verKRs(\''+obj.id+'\',\''+obj.titulo.substring(0,30)+'\',\''+obj.status+'\')">KRs \u2192</button>';
     html+='<button class="bo" style="padding:4px 8px;font-size:11px" onclick="editarObj(\''+obj.id+'\')">&#9999;&#65039;</button>';
     html+='<button class="ba" style="background:none;border:none;cursor:pointer;line-height:1;display:inline-flex;align-items:center;padding:4px" onclick="confDel(\''+obj.id+'\',\''+obj.titulo.substring(0,20)+'\',\'obj\')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div>';
-    if(stObj.ind)html+='<span class="kid '+stObj.ic+'" style="position:static">'+stObj.ind+'</span>';
-    if(isPrioObj)html+='<span class="kid az" style="position:static">\u26a1 Proximo</span>';
     html+='</div></div>';
+    if(obj.descricao)html+='<div class="od">'+obj.descricao+'</div>';
     if(CLI.telefone_empresario){
       var _nVenc=krsObj.filter(function(k){
         if(k.status==='Conclu\u00eddo'||k.status==='Bloqueado'||k.status==='Aguardar pr\u00f3ximo ciclo')return false;
@@ -3152,7 +3153,6 @@ async function carregarOKR(){
       }).length;
       if(_nVenc)html+='<div style="margin-top:6px">'+_htmlFalarComCliente(CLI.nome_empresario,CLI.telefone_empresario,_motivoKrVencido(_nVenc))+'</div>';
     }
-    if(obj.descricao)html+='<div class="od">'+obj.descricao+'</div>';
     html+='<div class="om">';
     if(inicios.length)html+='<span>Inicio: <strong>'+fmtD(inicios[0])+'</strong></span>';
     if(prazos.length)html+='<span>Termino: <strong>'+fmtD(prazos[prazos.length-1])+'</strong></span>';
